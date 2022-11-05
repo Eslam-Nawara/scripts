@@ -2,4 +2,4 @@
 
 percentage=$(xbacklight -get)
 
-echo "🔆 $percentage%"
+echo "☀️ $percentage%"

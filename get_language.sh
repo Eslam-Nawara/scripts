@@ -2,5 +2,5 @@
 
 layout=$(xkb-switch)
 
-[[ $layout = 'us' ]] && echo 'EN'
-[[ $layout = 'ara(qwerty)' ]] && echo 'AR'
+[[ $layout = 'us' ]] && echo '🇺🇸'
+[[ $layout = 'ara(qwerty)' ]] && echo '🇸🇦'
