@@ -1,20 +1,18 @@
 #!/bin/zsh
 
-ranger_workspace="2"
-firefox_workspace="3"
-telegram_workspace="4"
-code_workspace="5"
-discord_workspace="7"
-spotify_workspace="6"
+ranger_workspace="5: "
+firefox_workspace="2: "
+telegram_workspace="4: "
+code_workspace="1: "
+discord_workspace="7: "
+music_workspace="3: 🎧"
 
 Firefox() {
-    if [ -z $(pgrep firefox) ]
+    if [ -z $(xdotool search --class "firefox") ]
     then
         firefox
     else
         i3-msg workspace $firefox_workspace
-        current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-        [[ $current_workspace == $firefox_workspace ]] && i3-msg layout tabbed
     fi
 }
 
@@ -24,8 +22,6 @@ Telegram() {
         telegram-desktop
     else
         i3-msg workspace $telegram_workspace
-        current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-        [[ $current_workspace == $telegram_workspace ]] && i3-msg layout tabbed
     fi
 }
 
@@ -35,19 +31,15 @@ Discord() {
         discord
     else
         i3-msg workspace $discord_workspace
-        current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-        [[ $current_workspace == $discord_workspace ]] && i3-msg layout tabbed
     fi
 }
 
 Ranger() {
     if [ -z $(pgrep ranger) ]
     then
-        kitty ranger
+        kitty --class "ranger" ranger
     else
         i3-msg workspace $ranger_workspace
-        current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-        [[ $current_workspace == $ranger_workspace ]] && i3-msg layout tabbed
     fi
 }
 
@@ -56,24 +48,21 @@ Spotify() {
     then
         LD_PRELOAD=/usr/lib/spotify-adblock.so spotify
     else
-        i3-msg workspace $spotify_workspace
-        current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-        [[ $current_workspace == $spotify_workspace ]] && i3-msg layout tabbed
+        i3-msg workspace $music_workspace
+    fi
+}
+
+Anghami() {
+    if [ -z $(xdotool search --class "anghami") ]
+    then
+        firefox --new-instance -P anghami --class=anghami https://play.anghami.com/home
+    else
+        i3-msg workspace $music_workspace
     fi
 }
 
 Code() {
-    # if [ -z $(pgrep code) ]
-    # then
-    #     code
-    # else
-    #     i3-msg workspace $code_workspace
-    #     current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-    #     [[ $current_workspace == $code_workspace ]] && i3-msg layout tabbed
-    # fi
     i3-msg workspace $code_workspace
-    # current_workspace=$(i3-msg -t get_workspaces | jq '.[] | select(.focused == true).name' | tr -d '"')
-    # [[ $current_workspace == $code_workspace ]] && i3-msg layout tabbed
 }
 
 MtFirefox() {
@@ -84,8 +73,8 @@ MtTelegram() {
     i3-msg move container to workspace $telegram_workspace
 }
 
-MtSpotify() {
-    i3-msg move container to workspace $spotify_workspace
+MtMusic() {
+    i3-msg move container to workspace $music_workspace
 }
 
 MtRanger() {
@@ -108,7 +97,10 @@ case $1 in
     "mt_telegram") MtTelegram;;
 
     "spotify") Spotify;;
-    "mt_spotify") MtSpotify;;
+    "mt_music") MtMusic;;
+
+    "anghami") Anghami;;
+    "mt_music") MtMusic;;
 
     "ranger") Ranger;;
     "mt_ranger") MtRanger;;
