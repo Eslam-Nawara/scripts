@@ -1,11 +1,13 @@
 #!/bin/zsh
 
-ranger_workspace="5: "
-firefox_workspace="2: "
-telegram_workspace="4: "
 code_workspace="1: "
-discord_workspace="7: "
+firefox_workspace="2: "
 music_workspace="3: 🎧"
+telegram_workspace="4: "
+ranger_workspace="5: "
+video_workspace="6: "
+pdf_workspace="7: "
+discord_workspace="8: "
 
 Firefox() {
     if [ -z $(xdotool search --class "firefox") ]
@@ -13,6 +15,24 @@ Firefox() {
         firefox
     else
         i3-msg workspace $firefox_workspace
+    fi
+}
+
+Okular() {
+    if [ -z $(pgrep okular) ]
+    then
+        okular
+    else
+        i3-msg workspace $pdf_workspace
+    fi
+}
+
+Mpv() {
+    if [ -z $(pgrep mpv) ]
+    then
+        kitty --class "mpv" mpv . 
+    else
+        i3-msg workspace $video_workspace
     fi
 }
 
@@ -65,6 +85,14 @@ Code() {
     i3-msg workspace $code_workspace
 }
 
+MtMpv() {
+    i3-msg move container ot workspace $video_workspace
+}
+
+MtOkular() {
+    i3-msg move container to workspace $pdf_workspace
+}
+
 MtFirefox() {
     i3-msg move container to workspace $firefox_workspace
 }
@@ -110,4 +138,11 @@ case $1 in
 
     "discord") Discord;;
     "mt_discord") MtDiscord;;
+
+    "okular") Okular;;
+    "mt_okular") MtOkular;;
+    
+    "mpv") Mpv;;
+    "mt_mpv") MtMpv;;
+
 esac

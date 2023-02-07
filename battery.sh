@@ -1,7 +1,12 @@
 #!/bin/zsh
 
 state=$(acpi | cut -d ' ' -f 3 | tr -d ',')
-percentage=$(acpi | cut -d ' ' -f 5 | tr -d '%,')
+percentage=$(acpi | cut -d ' ' -f 4 | tr -d '%,')
+
+if [[ $percentage = "charging" ]]
+then
+    percentage=$(acpi | cut -d ' ' -f 5 | tr -d '%,')
+fi
 
 if [[ $state = "Discharging" ]]
 then
@@ -15,6 +20,7 @@ then
         systemctl suspend
     fi
     echo "$icon $percentage%"
+
 
 else
     echo "🔌 $percentage%"
