@@ -4,7 +4,7 @@ code_workspace="1: "
 firefox_workspace="2: "
 music_workspace="3: 🎧"
 telegram_workspace="4: "
-ranger_workspace="5: "
+file_manager_workspace="5: "
 video_workspace="6: "
 pdf_workspace="7: "
 discord_workspace="8: "
@@ -54,13 +54,12 @@ Discord() {
     fi
 }
 
-Ranger() {
-    if [ -z $(pgrep ranger) ]
-    then
-        kitty --class "ranger" ranger
-    else
-        i3-msg workspace $ranger_workspace
-    fi
+Lf() {
+    if [ -z $(xdotool search --class "lf") ]; then
+        setsid -f kitty --class "lf" -e lf
+	else
+		i3-msg workspace $file_manager_workspace
+	fi
 }
 
 Spotify() {
@@ -105,8 +104,8 @@ MtMusic() {
     i3-msg move container to workspace $music_workspace
 }
 
-MtRanger() {
-    i3-msg move container to workspace $ranger_workspace
+MtLf() {
+    i3-msg move container to workspace $file_manager_workspace
 }
 
 MtCode() {
@@ -130,8 +129,8 @@ case $1 in
     "anghami") Anghami;;
     "mt_music") MtMusic;;
 
-    "ranger") Ranger;;
-    "mt_ranger") MtRanger;;
+    "lf") Lf;;
+    "mt_lf") MtLf;;
 
     "code") Code;;
     "mt_code") MtCode;;
